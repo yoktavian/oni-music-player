@@ -1,3 +1,5 @@
+import 'package:async/async.dart';
+
 abstract class SearchRepository {
-  Future<dynamic> searchSongByArtistName({required String artist});
+  Future<Result> searchSongByArtistName({required String artist});
 }

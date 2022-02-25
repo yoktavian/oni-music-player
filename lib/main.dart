@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:oni_api/oni_api.dart';
+import 'package:async/async.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
+import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
 
 void main() {
   runApp(const MyApp());
@@ -66,8 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    _fetch();
+  }
+
+  void _fetch() async {
     final repo = SearchRepositoryImpl();
-    repo.searchSongByArtistName(artist: 'rich brian');
+    final result = await repo.searchSongByArtistName(artist: 'rich brian');
+    if (result is ValueResult) {
+      final response = result.value;
+      if (response is TrackResponse) {
+        debugPrint(response.results.first.trackName);
+      }
+    }
   }
 
   @override

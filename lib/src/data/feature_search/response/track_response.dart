@@ -12,7 +12,7 @@ class TrackResponse extends BaseResponse<List<Track>> {
   factory TrackResponse.fromJson(Map<String, dynamic> json) {
     return TrackResponse(
       json['resultCount'],
-      (json['results'] as List<TrackModel>).map(
+      (json['results'] as List<dynamic>).map(
         (value) {
           return TrackModel.fromJson(value as Map<String, dynamic>);
         },

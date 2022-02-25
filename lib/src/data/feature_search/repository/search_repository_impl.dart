@@ -1,17 +1,19 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:oni_api/oni_api.dart';
-import 'package:oni_music_player/src/data/client/ItuneClient.dart';
-import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 import 'package:async/async.dart';
+import 'package:oni_music_player/src/data/client/ItuneClient.dart';
+import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
+import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 
 class SearchRepositoryImpl extends SearchRepository {
   final OniGet client;
 
   SearchRepositoryImpl({OniGet? client}) : client = client ?? ItuneClient();
-  
+
   @override
-  Future searchSongByArtistName({required String artist}) async {
+  Future<Result> searchSongByArtistName({required String artist}) async {
     final response = await client.get(
       path: '/search',
       queryParameters: {
@@ -21,9 +23,15 @@ class SearchRepositoryImpl extends SearchRepository {
     );
 
     if (response is ValueResult) {
-      final jsonResponse = jsonDecode(response.asValue.value);
+      final json = jsonDecode(response.asValue.value);
+      final trackResponse = await compute(_parseTrackResponse, json);
+      return Result.value(trackResponse);
     }
 
     return response;
   }
+}
+
+TrackResponse _parseTrackResponse(json) {
+  return TrackResponse.fromJson(json);
 }
