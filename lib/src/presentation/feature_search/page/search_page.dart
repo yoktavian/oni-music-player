@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
+import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
 import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
+import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -16,10 +19,13 @@ class _SearchPageState extends State<SearchPage> {
 
   late TextEditingController controller;
 
+  late OniPresenter presenter;
+
   @override
   void initState() {
     super.initState();
     controller = TextEditingController();
+    presenter = SearchPresenter(SearchRepositoryImpl());
   }
 
   @override
@@ -35,31 +41,43 @@ class _SearchPageState extends State<SearchPage> {
               'Hello',
               'Yuda',
               'Find your favorite song by Artist name.',
+              searchPlaceholder: 'Type the artist name here ...',
               onKeywordChanged: (keyword) {},
-              onKeywordSubmitted: (keyword) {},
+              onKeywordSubmitted: (keyword) {
+                presenter.emit(SearchSongEvent(keyword));
+              },
             ),
             Expanded(
               child: Stack(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return SearchResultWidget(
-                          'Rich brian',
-                          'Song name',
-                          'Sailor',
-                          'https://i.ytimg.com/vi/8YfSUfW3bF4/maxresdefault.jpg',
-                          (played) {
-                            print(played);
+                    child: ValueListenableBuilder(
+                      valueListenable: presenter.state,
+                      builder: (context, value, child) {
+                        final state = value as SearchState;
+                        return ListView.separated(
+                          itemBuilder: (context, index) {
+                            print(state.tracks?.first.trackName);
+                            final track = state.tracks?[index];
+
+                            return SearchResultWidget(
+                              track?.artistName ?? '',
+                              track?.trackName ?? '',
+                              track?.collectionName ?? '',
+                              track?.artworkUrl100 ?? '',
+                                  (played) {
+                                print(played);
+                              },
+                              playing: index == 0,
+                            );
                           },
-                          playing: index == 0,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 8);
+                          },
+                          itemCount: state.tracks?.length ?? 0,
                         );
                       },
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 8);
-                      },
-                      itemCount: 5,
                     ),
                   ),
                 ],

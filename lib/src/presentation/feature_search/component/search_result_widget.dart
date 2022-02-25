@@ -70,6 +70,8 @@ class SearchResultWidget extends StatelessWidget {
                     fontSize: 20,
                     color: Colors.white,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -78,6 +80,8 @@ class SearchResultWidget extends StatelessWidget {
                     fontSize: 16,
                     color: Colors.white,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -86,6 +90,8 @@ class SearchResultWidget extends StatelessWidget {
                     fontSize: 10,
                     color: Colors.amberAccent,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
