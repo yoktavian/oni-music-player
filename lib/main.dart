@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:oni_api/oni_api.dart';
+import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,6 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final repo = SearchRepositoryImpl();
+    repo.searchSongByArtistName(artist: 'rich brian');
   }
 
   @override
