@@ -50,6 +50,9 @@ class _SearchPageState extends State<SearchPage> {
                           'Song name',
                           'Sailor',
                           'https://i.ytimg.com/vi/8YfSUfW3bF4/maxresdefault.jpg',
+                          (played) {
+                            print(played);
+                          },
                           playing: index == 0,
                         );
                       },

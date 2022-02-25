@@ -78,6 +78,7 @@ class SearchHeaderWidget extends StatelessWidget {
                   placeholder: searchPlaceholder,
                 ),
               ),
+
             ],
           ),
         )

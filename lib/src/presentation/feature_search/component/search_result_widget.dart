@@ -13,11 +13,14 @@ class SearchResultWidget extends StatelessWidget {
 
   final bool playing;
 
+  final ValueChanged<bool> onPlayStatusChanged;
+
   const SearchResultWidget(
     this.songName,
     this.artistName,
     this.album,
-    this.albumImageUrl, {
+    this.albumImageUrl,
+    this.onPlayStatusChanged, {
     Key? key,
     this.playing = false,
   }) : super(key: key);
@@ -94,12 +97,73 @@ class SearchResultWidget extends StatelessWidget {
                   Colors.greenAccent,
                   Colors.yellow,
                   Colors.teal,
-                  Colors.pinkAccent,
+                  Colors.redAccent,
                 ],
                 [1000, 1800, 2000, 900],
               ),
-            )
+            ),
+          AnimatedPlayIcon(onPlayStatusChanged),
         ],
+      ),
+    );
+  }
+}
+
+class AnimatedPlayIcon extends StatefulWidget {
+  final ValueChanged<bool> onPlayStatusChanged;
+
+  const AnimatedPlayIcon(this.onPlayStatusChanged, {Key? key}) : super(key: key);
+
+  @override
+  State<AnimatedPlayIcon> createState() => _AnimatedPlayIconState();
+}
+
+class _AnimatedPlayIconState extends State<AnimatedPlayIcon>
+    with TickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    )..addListener(_animationListener);
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.linear,
+    );
+  }
+
+  void _animationListener() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        final isPlayed = !animation.isCompleted;
+        widget.onPlayStatusChanged(isPlayed);
+
+        if (animation.isCompleted) {
+          animationController.reverse();
+        } else {
+          animationController.forward();
+        }
+      },
+      child: AnimatedIcon(
+        icon: AnimatedIcons.play_pause,
+        progress: animation,
+        size: 40,
+        color: Colors.redAccent,
       ),
     );
   }
