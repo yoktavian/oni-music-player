@@ -1,9 +1,11 @@
+import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:oni_api/oni_api.dart';
-import 'package:async/async.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
+import 'package:oni_music_player/src/presentation/base/route/base_route.dart';
+import 'package:oni_music_player/src/presentation/feature_search/page/search_page.dart';
+import 'package:oni_music_player/src/presentation/feature_search/route/feature_search_route.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,26 +13,28 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: _populateRoutes([
+        FeatureSearchRoute(),
+      ]),
     );
+  }
+
+  Map<String, Widget Function(BuildContext)> _populateRoutes(
+    List<BaseRoute> route,
+  ) {
+    final Map<String, Widget Function(BuildContext)> routes = {};
+    for (var element in route) {
+      routes.addAll(element.routes);
+    }
+    return routes;
   }
 }
 
