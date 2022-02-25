@@ -46,7 +46,6 @@ class _TrackPlayingIndicatorWidgetState
   @override
   void dispose() {
     animation.removeListener(_animationListener);
-    animationController.dispose();
     super.dispose();
   }
 

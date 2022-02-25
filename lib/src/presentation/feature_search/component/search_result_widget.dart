@@ -129,11 +129,11 @@ class _AnimatedPlayIconState extends State<AnimatedPlayIcon>
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
-    )..addListener(_animationListener);
+    );
     animation = CurvedAnimation(
       parent: animationController,
       curve: Curves.linear,
-    );
+    )..addListener(_animationListener);
   }
 
   void _animationListener() {
@@ -142,6 +142,7 @@ class _AnimatedPlayIconState extends State<AnimatedPlayIcon>
 
   @override
   void dispose() {
+    animation.removeListener(_animationListener);
     animationController.dispose();
     super.dispose();
   }
