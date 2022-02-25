@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/presentation/base/ui/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
 
@@ -50,6 +50,7 @@ class _SearchPageState extends State<SearchPage> {
                           'Song name',
                           'Sailor',
                           'https://i.ytimg.com/vi/8YfSUfW3bF4/maxresdefault.jpg',
+                          playing: index == 0,
                         );
                       },
                       separatorBuilder: (context, index) {

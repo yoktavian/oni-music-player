@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/presentation/base/component/text_field_widget.dart';
-import 'package:oni_music_player/src/presentation/base/ui/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 
 class SearchHeaderWidget extends StatelessWidget {
   final String headerImage;
@@ -57,6 +57,7 @@ class SearchHeaderWidget extends StatelessWidget {
             children: [
               RichText(
                 text: TextSpan(
+                  style: const TextStyle(fontSize: 26),
                   children: [
                     TextSpan(text: '$greetingLabel, '),
                     TextSpan(

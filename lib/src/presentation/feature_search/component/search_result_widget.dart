@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/presentation/base/ui/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/feature_search/component/search_track_playing_visualizer_widget.dart';
 
 class SearchResultWidget extends StatelessWidget {
   final String songName;
@@ -62,7 +62,7 @@ class SearchResultWidget extends StatelessWidget {
               children: [
                 Text(
                   songName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     color: Colors.white,
@@ -71,7 +71,7 @@ class SearchResultWidget extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   artistName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),
@@ -79,14 +79,26 @@ class SearchResultWidget extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   album,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 10,
                     color: Colors.amberAccent,
                   ),
                 ),
               ],
             ),
-          )
+          ),
+          if (playing)
+            const Expanded(
+              child: MusicVisualizerWidget(
+                [
+                  Colors.greenAccent,
+                  Colors.yellow,
+                  Colors.teal,
+                  Colors.pinkAccent,
+                ],
+                [1000, 1800, 2000, 900],
+              ),
+            )
         ],
       ),
     );
