@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:oni_api/oni_api.dart';
 import 'package:async/async.dart';
@@ -53,6 +54,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  AudioPlayer audioPlayer = AudioPlayer();
 
   void _incrementCounter() {
     setState(() {
@@ -71,13 +73,20 @@ class _MyHomePageState extends State<MyHomePage> {
     _fetch();
   }
 
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
   void _fetch() async {
     final repo = SearchRepositoryImpl();
     final result = await repo.searchSongByArtistName(artist: 'rich brian');
     if (result is ValueResult) {
       final response = result.value;
       if (response is TrackResponse) {
-        debugPrint(response.results.first.trackName);
+        audioPlayer.play(response.results.first.previewUrl);
+        debugPrint(response.results.first.previewUrl);
       }
     }
   }
