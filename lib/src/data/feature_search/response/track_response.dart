@@ -1,5 +1,5 @@
 import 'package:oni_music_player/src/data/feature_search/model/track_model.dart';
-import 'package:oni_music_player/src/data/response/base/base_response.dart';
+import 'package:oni_music_player/src/data/base/response/base_response.dart';
 import 'package:oni_music_player/src/domain/feature_search/entity/track.dart';
 
 class TrackResponse extends BaseResponse<List<Track>> {
