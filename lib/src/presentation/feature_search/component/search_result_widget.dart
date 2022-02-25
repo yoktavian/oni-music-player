@@ -96,81 +96,41 @@ class SearchResultWidget extends StatelessWidget {
               ],
             ),
           ),
-          if (playing)
-            const Expanded(
-              child: MusicVisualizerWidget(
-                [
-                  Colors.greenAccent,
-                  Colors.yellow,
-                  Colors.teal,
-                  Colors.redAccent,
-                ],
-                [1000, 1800, 2000, 900],
-              ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (playing) ...[
+                  MusicVisualizerWidget(
+                    [
+                      Colors.greenAccent,
+                      Colors.yellow,
+                      Colors.teal,
+                      Colors.redAccent,
+                    ],
+                    [1000, 1800, 2000, 900],
+                  ),
+                  GestureDetector(
+                    onTap: () => onPlayStatusChanged(false),
+                    child: Icon(
+                      Icons.pause,
+                      size: 24,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+                ] else
+                  GestureDetector(
+                    onTap: () => onPlayStatusChanged(true),
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 24,
+                      color: Colors.redAccent,
+                    ),
+                  ),
+              ],
             ),
-          AnimatedPlayIcon(onPlayStatusChanged),
+          ),
         ],
-      ),
-    );
-  }
-}
-
-class AnimatedPlayIcon extends StatefulWidget {
-  final ValueChanged<bool> onPlayStatusChanged;
-
-  const AnimatedPlayIcon(this.onPlayStatusChanged, {Key? key}) : super(key: key);
-
-  @override
-  State<AnimatedPlayIcon> createState() => _AnimatedPlayIconState();
-}
-
-class _AnimatedPlayIconState extends State<AnimatedPlayIcon>
-    with TickerProviderStateMixin {
-  late AnimationController animationController;
-  late Animation<double> animation;
-
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    animation = CurvedAnimation(
-      parent: animationController,
-      curve: Curves.linear,
-    )..addListener(_animationListener);
-  }
-
-  void _animationListener() {
-    setState(() {});
-  }
-
-  @override
-  void dispose() {
-    animation.removeListener(_animationListener);
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        final isPlayed = !animation.isCompleted;
-        widget.onPlayStatusChanged(isPlayed);
-
-        if (animation.isCompleted) {
-          animationController.reverse();
-        } else {
-          animationController.forward();
-        }
-      },
-      child: AnimatedIcon(
-        icon: AnimatedIcons.play_pause,
-        progress: animation,
-        size: 40,
-        color: Colors.redAccent,
       ),
     );
   }

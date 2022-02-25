@@ -5,12 +5,17 @@ import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.d
 import 'package:async/async.dart';
 
 class SearchState {
-  List<Track>? tracks;
+  List<Track> tracks;
 
-  SearchState({this.tracks});
+  Track? playedTrack;
 
-  SearchState copyWith({List<Track>? tracks}) {
-    return SearchState(tracks: tracks ?? this.tracks);
+  SearchState({this.tracks = const [], this.playedTrack});
+
+  SearchState copyWith({List<Track>? tracks, Track? playedTrack}) {
+    return SearchState(
+      tracks: tracks ?? this.tracks,
+      playedTrack: playedTrack ?? this.playedTrack,
+    );
   }
 }
 
@@ -22,6 +27,16 @@ class SearchSongEvent extends SearchEvent {
   SearchSongEvent(this.artistName);
 }
 
+class PlayTrackEvent extends SearchEvent {
+  final Track track;
+
+  PlayTrackEvent(this.track);
+}
+
+class StopPlayedTrackEvent extends SearchEvent {
+  StopPlayedTrackEvent();
+}
+
 class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
   final SearchRepository repository;
 
@@ -31,6 +46,10 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
   void mapEvent(SearchEvent event) {
     if (event is SearchSongEvent) {
       _searchSong(event.artistName);
+    } else if (event is PlayTrackEvent) {
+      _playTrack(event.track);
+    } else if (event is StopPlayedTrackEvent) {
+      _stopTrack();
     }
   }
 
@@ -40,7 +59,17 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
     );
 
     if (response is ValueResult) {
-      state.value = state.value.copyWith(tracks: response.asValue.value.results);
+      state.value = state.value.copyWith(
+        tracks: response.asValue.value.results,
+      );
     }
+  }
+
+  void _playTrack(Track track) {
+    state.value = state.value.copyWith(playedTrack: track);
+  }
+
+  void _stopTrack() {
+    state.value = SearchState().copyWith(tracks: state.value.tracks);
   }
 }

@@ -3,8 +3,6 @@ import 'package:oni_music_player/src/presentation/base/component/text_field_widg
 import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 
 class SearchHeaderWidget extends StatelessWidget {
-  final String headerImage;
-
   final String greetingLabel;
 
   final String name;
@@ -18,7 +16,6 @@ class SearchHeaderWidget extends StatelessWidget {
   final ValueChanged<String>? onKeywordSubmitted;
 
   const SearchHeaderWidget(
-    this.headerImage,
     this.greetingLabel,
     this.name,
     this.title, {

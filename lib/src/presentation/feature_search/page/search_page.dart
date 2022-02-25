@@ -14,9 +14,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  static const headerImage =
-      'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80';
-
   late TextEditingController controller;
 
   late OniPresenter presenter;
@@ -29,6 +26,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorPalette.bleachedCedar,
@@ -37,7 +40,6 @@ class _SearchPageState extends State<SearchPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SearchHeaderWidget(
-              headerImage,
               'Hello',
               'Yuda',
               'Find your favorite song by Artist name.',
@@ -56,26 +58,32 @@ class _SearchPageState extends State<SearchPage> {
                       valueListenable: presenter.state,
                       builder: (context, value, child) {
                         final state = value as SearchState;
+
                         return ListView.separated(
                           itemBuilder: (context, index) {
-                            print(state.tracks?.first.trackName);
-                            final track = state.tracks?[index];
+                            print(state.tracks.first.trackName);
+                            final track = state.tracks[index];
 
                             return SearchResultWidget(
-                              track?.artistName ?? '',
-                              track?.trackName ?? '',
-                              track?.collectionName ?? '',
-                              track?.artworkUrl100 ?? '',
-                                  (played) {
-                                print(played);
+                              track.artistName,
+                              track.trackName,
+                              track.collectionName,
+                              track.artworkUrl100,
+                              (played) {
+                                if (played) {
+                                  presenter.emit(PlayTrackEvent(track));
+                                } else {
+                                  presenter.emit(StopPlayedTrackEvent());
+                                }
                               },
-                              playing: index == 0,
+                              playing: state.playedTrack?.trackId == track.trackId,
+                              key: Key(track.trackId.toString()),
                             );
                           },
                           separatorBuilder: (context, index) {
                             return const SizedBox(height: 8);
                           },
-                          itemCount: state.tracks?.length ?? 0,
+                          itemCount: state.tracks.length,
                         );
                       },
                     ),

@@ -4,6 +4,7 @@ class TrackModel extends Track {
   TrackModel(
     int artistId,
     String artistName,
+    int trackId,
     String trackName,
     String collectionName,
     String artworkUrl60,
@@ -12,6 +13,7 @@ class TrackModel extends Track {
   ) : super(
     artistId,
     artistName,
+    trackId,
     trackName,
     collectionName,
     artworkUrl60,
@@ -23,6 +25,7 @@ class TrackModel extends Track {
     return TrackModel(
       json['artistId'] as int,
       json['artistName'] as String,
+      json['trackId'] as int,
       json['trackName'] as String,
       json['collectionName'] as String,
       json['artworkUrl60'] as String,

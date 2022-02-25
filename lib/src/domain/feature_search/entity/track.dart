@@ -1,6 +1,7 @@
 class Track {
   final int artistId;
   final String artistName;
+  final int trackId;
   final String trackName;
   final String collectionName;
   final String artworkUrl60;
@@ -10,6 +11,7 @@ class Track {
   const Track(
     this.artistId,
     this.artistName,
+    this.trackId,
     this.trackName,
     this.collectionName,
     this.artworkUrl60,
