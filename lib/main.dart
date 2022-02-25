@@ -3,9 +3,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
-import 'package:oni_music_player/src/presentation/base/route/base_route.dart';
-import 'package:oni_music_player/src/presentation/feature_search/page/search_page.dart';
-import 'package:oni_music_player/src/presentation/feature_search/route/feature_search_route.dart';
+import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
+import 'package:oni_music_player/src/presentation/feature_product_detail/router/product_detail_router.dart';
+import 'package:oni_music_player/src/presentation/feature_search/router/search_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,26 +13,27 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       routes: _populateRoutes([
-        FeatureSearchRoute(),
+        SearchRouter(),
+        ProductDetailRouter(),
       ]),
     );
   }
 
   Map<String, Widget Function(BuildContext)> _populateRoutes(
-    List<BaseRoute> route,
+    List<OniRouter> route,
   ) {
     final Map<String, Widget Function(BuildContext)> routes = {};
-    for (var element in route) {
-      routes.addAll(element.routes);
+    for (var router in route) {
+      routes.addAll(router.routes);
     }
     return routes;
   }
