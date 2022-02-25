@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/presentation/base/component/text_field_widget.dart';
+import 'package:oni_music_player/src/presentation/base/ui/color_pallete.dart';
 
 class SearchHeaderWidget extends StatelessWidget {
   final String headerImage;
+
+  final String greetingLabel;
+
+  final String name;
 
   final String title;
 
@@ -14,6 +19,8 @@ class SearchHeaderWidget extends StatelessWidget {
 
   const SearchHeaderWidget(
     this.headerImage,
+    this.greetingLabel,
+    this.name,
     this.title, {
     Key? key,
     this.searchPlaceholder = '',
@@ -26,9 +33,20 @@ class SearchHeaderWidget extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          child: Image.network(headerImage, fit: BoxFit.cover),
-          height: 180,
+          height: 160,
           width: MediaQuery.of(context).size.width,
+          child: const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  ColorPalette.mineShaft,
+                  ColorPalette.bleachedCedar,
+                ],
+              ),
+            ),
+          ),
         ),
         Positioned(
           bottom: 16,
@@ -40,11 +58,17 @@ class SearchHeaderWidget extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(text: title),
+                    TextSpan(text: '$greetingLabel, '),
+                    TextSpan(
+                      text: '$name!',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 4),
+              Text(title, style: const TextStyle(color: Colors.amberAccent)),
+              const SizedBox(height: 16),
               SizedBox(
                 height: 36,
                 child: TextFieldWidget(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:oni_music_player/src/presentation/base/ui/color_pallete.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
+import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -23,16 +25,41 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ColorPalette.bleachedCedar,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SearchHeaderWidget(
               headerImage,
-              'Find song by Artist name.',
+              'Hello',
+              'Yuda',
+              'Find your favorite song by Artist name.',
               onKeywordChanged: (keyword) {},
               onKeywordSubmitted: (keyword) {},
+            ),
+            Expanded(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        return SearchResultWidget(
+                          'Rich brian',
+                          'Song name',
+                          'Sailor',
+                          'https://i.ytimg.com/vi/8YfSUfW3bF4/maxresdefault.jpg',
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 8);
+                      },
+                      itemCount: 5,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
