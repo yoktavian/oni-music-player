@@ -3,6 +3,7 @@
 - Architecture
 - 3rd party lib
 - How to run the project
+- Features
 
 ## Architecture
 
@@ -108,6 +109,8 @@ For this project the domain layer only contain a simple things like entity and a
 
 Data layer contains any kind of data sources and also for 3rd party library on this case i am using `audioPlayer` library. So, perhaps you are confusing why we need to create an abstraction for third party library in the domain then we create the implementation class in the data layer? why we don't directly use the third party library on the `presentation` layer instead? Yea, if we're talking about the simplycity and the fastest way to implement it in our project then that is a good approach to use directly on the presentation layer. But the point is what if happen if we have to change the third party library to the another library for any reason? or the current version of library is deprecated and we have to force update and a lot of api has been changed? you will going to be crazy to fix here and there when you're using it in a lot of screen in the presentation layer. But when we have an abstraction, our own api that consumed by screen is still the same with the previouse one, only the class implementation that need to be changed or refactor right? so we don't need to refactor anything in the presentation layer. That the same thing for the model in data layer. Why i need to create a model when i already have an entity in the domain layer? just because when someday if i need to change the way i parse json in data layer perhaps i use library or even i need to use another type of data for example `xml`, my data that is consumed by screen in the presentation layer not going to be changed because the presentation layer depend on the entity in the domain layer. I just need to modify the model inside the data layer right? but the entity is still the same.
 
+Also for the network layer, i've been created my own library that is build with `dio` lib for the network request. I seperate the lib in the library module, so when i need to create a new project one day i just need to import that library into the project.
+
 ## 3rd party library
 
 On this project, i depends on some third party library
@@ -123,7 +126,7 @@ On this project, i depends on some third party library
 
 Basically it's quite simple, you have to preparing your emulator in android studio.
 
-        Tools > AVD Manager > Click launch button
+     Tools > AVD Manager > Click launch button
 
 If you don't have any emulator installed on the AVD Manager, then you have to download it first. Then you can follow the step above afterward. After the emulator was running, then you can run the project directly by clicking Run icon on the android studio and make sure that you run `main.dart`.
 
@@ -135,3 +138,17 @@ Minimum Requirement for the project:
 
 1. Flutter 2.10.1
 2. Dart 2.16.1
+
+## Features
+1. Search song by artist name
+2. Play song with some animation on the list item as an indicator
+3. Pause the song using bottom music controller
+4. Resume the song using bottom music controller
+5. Search another song with current song still playing
+
+## Notes:
+By default, when you open the search screen it's just an empty state. You have to search the song first by using artist name then the result would be displayed.
+
+## Sample screenshot
+<img src='sample_asset/sc_1.png' width='30%'/>
+<img src='sample_asset/sc_2.png' width='30%'/>
