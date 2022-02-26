@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/domain/feature_search/entity/track.dart';
 import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
@@ -7,14 +8,17 @@ import 'package:async/async.dart';
 class SearchState {
   List<Track> tracks;
 
-  Track? playedTrack;
+  Track? playedSong;
 
-  SearchState({this.tracks = const [], this.playedTrack});
+  SearchState({this.tracks = const [], this.playedSong});
 
-  SearchState copyWith({List<Track>? tracks, Track? playedTrack}) {
+  SearchState copy({
+    List<Track>? tracks,
+    Track? playedSong,
+  }) {
     return SearchState(
       tracks: tracks ?? this.tracks,
-      playedTrack: playedTrack ?? this.playedTrack,
+      playedSong: playedSong ?? this.playedSong,
     );
   }
 }
@@ -27,49 +31,71 @@ class SearchSongEvent extends SearchEvent {
   SearchSongEvent(this.artistName);
 }
 
-class PlayTrackEvent extends SearchEvent {
+class PlaySongEvent extends SearchEvent {
   final Track track;
 
-  PlayTrackEvent(this.track);
+  PlaySongEvent(this.track);
 }
 
-class StopPlayedTrackEvent extends SearchEvent {
-  StopPlayedTrackEvent();
+class StopSongPlayingEvent extends SearchEvent {
+  StopSongPlayingEvent();
+}
+
+class PauseSongPlayingEvent extends SearchEvent {
+  PauseSongPlayingEvent();
+}
+
+class ResumeSongPlayingEvent extends SearchEvent {
+  ResumeSongPlayingEvent();
+}
+
+class OnMusicPlayerStateChangedEvent extends SearchEvent {
+  final OniMusicState state;
+
+  OnMusicPlayerStateChangedEvent(this.state);
 }
 
 class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
-  final SearchRepository repository;
+  final SearchRepository _repository;
 
-  SearchPresenter(this.repository) : super(ValueNotifier(SearchState()));
+  SearchPresenter(this._repository,) : super(ValueNotifier(SearchState()));
 
   @override
   void mapEvent(SearchEvent event) {
     if (event is SearchSongEvent) {
       _searchSong(event.artistName);
-    } else if (event is PlayTrackEvent) {
-      _playTrack(event.track);
-    } else if (event is StopPlayedTrackEvent) {
-      _stopTrack();
+    } else if (event is PlaySongEvent) {
+      state.value = state.value.copy(playedSong: event.track);
+    } else if (event is StopSongPlayingEvent) {
+      state.value = SearchState().copy(tracks: state.value.tracks);
+    } else if (event is PauseSongPlayingEvent) {
+      // just set the copy of current state to update the ui.
+      state.value = state.value.copy();
+    } else if (event is ResumeSongPlayingEvent) {
+      // just set the copy of current state to update the ui.
+      state.value = state.value.copy();
+    } else if (event is OnMusicPlayerStateChangedEvent) {
+      _onStateChanged(event.state);
     }
   }
 
   void _searchSong(String artistName) async {
-    final response = await repository.searchSongByArtistName(
+    final response = await _repository.searchSongByArtistName(
       artist: artistName,
     );
 
     if (response is ValueResult) {
-      state.value = state.value.copyWith(
+      state.value = state.value.copy(
         tracks: response.asValue.value.results,
       );
     }
   }
 
-  void _playTrack(Track track) {
-    state.value = state.value.copyWith(playedTrack: track);
-  }
-
-  void _stopTrack() {
-    state.value = SearchState().copyWith(tracks: state.value.tracks);
+  void _onStateChanged(OniMusicState musicState) {
+    if (musicState == OniMusicState.completed) {
+      state.value = SearchState().copy(tracks: state.value.tracks);
+    } else {
+      state.value = state.value.copy();
+    }
   }
 }

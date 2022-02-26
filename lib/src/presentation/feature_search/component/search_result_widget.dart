@@ -101,7 +101,7 @@ class SearchResultWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (playing) ...[
-                  MusicVisualizerWidget(
+                  const MusicVisualizerWidget(
                     [
                       Colors.greenAccent,
                       Colors.yellow,
@@ -110,18 +110,18 @@ class SearchResultWidget extends StatelessWidget {
                     ],
                     [1000, 1800, 2000, 900],
                   ),
-                  GestureDetector(
+                  InkWell(
                     onTap: () => onPlayStatusChanged(false),
-                    child: Icon(
+                    child: const Icon(
                       Icons.pause,
                       size: 24,
                       color: Colors.redAccent,
                     ),
                   ),
                 ] else
-                  GestureDetector(
+                  InkWell(
                     onTap: () => onPlayStatusChanged(true),
-                    child: Icon(
+                    child: const Icon(
                       Icons.play_arrow,
                       size: 24,
                       color: Colors.redAccent,

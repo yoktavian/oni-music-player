@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:oni_music_player/src/data/base/organizer/oni_music_organizer_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
+import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
 import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
@@ -18,16 +20,25 @@ class _SearchPageState extends State<SearchPage> {
 
   late OniPresenter presenter;
 
+  late OniMusicOrganizer musicOrganizer;
+
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
     presenter = SearchPresenter(SearchRepositoryImpl());
+    musicOrganizer = OniMusicOrganizerImpl(
+      onStateChanged: (state) {
+        presenter.emit(OnMusicPlayerStateChangedEvent(state));
+      },
+    );
+    controller = TextEditingController();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    presenter.dispose();
+    musicOrganizer.disposed();
     super.dispose();
   }
 
@@ -61,23 +72,31 @@ class _SearchPageState extends State<SearchPage> {
 
                         return ListView.separated(
                           itemBuilder: (context, index) {
-                            print(state.tracks.first.trackName);
                             final track = state.tracks[index];
+                            final selectedSong = track.trackId == state.playedSong?.trackId;
+
+                            if (selectedSong && musicOrganizer.isStopped) {
+                              musicOrganizer.play(track.previewUrl);
+                            }
 
                             return SearchResultWidget(
                               track.artistName,
                               track.trackName,
                               track.collectionName,
                               track.artworkUrl100,
-                              (played) {
-                                if (played) {
-                                  presenter.emit(PlayTrackEvent(track));
+                              (play) {
+                                if (play) {
+                                  musicOrganizer.stop();
+                                  presenter.emit(StopSongPlayingEvent());
+                                  presenter.emit(PlaySongEvent(track));
+                                  musicOrganizer.play(track.previewUrl);
                                 } else {
-                                  presenter.emit(StopPlayedTrackEvent());
+                                  musicOrganizer.stop();
+                                  presenter.emit(StopSongPlayingEvent());
                                 }
                               },
-                              playing: state.playedTrack?.trackId == track.trackId,
-                              key: Key(track.trackId.toString()),
+                              playing: selectedSong && musicOrganizer.isPlaying,
+                              key: ObjectKey(track.trackId),
                             );
                           },
                           separatorBuilder: (context, index) {
@@ -90,6 +109,50 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ],
               ),
+            ),
+            ValueListenableBuilder(
+              valueListenable: presenter.state,
+              builder: (context, value, widget) {
+                final showControlMenu = musicOrganizer.isPlaying || musicOrganizer.isPaused;
+                if (!showControlMenu) return const SizedBox.shrink();
+
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    color: Colors.white30,
+                  ),
+                  child: Row(
+                    children: [
+                      if (musicOrganizer.isPlaying)
+                        InkWell(
+                          onTap: () {
+                            musicOrganizer.pause();
+                            presenter.emit(PauseSongPlayingEvent());
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white30,
+                          ),
+                        )
+                      else
+                        InkWell(
+                          onTap: () {
+                            musicOrganizer.resume();
+                            presenter.emit(ResumeSongPlayingEvent());
+                          },
+                          child: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.white30,
+                          ),
+                        )
+                    ],
+                  ),
+                );
+              },
             ),
           ],
         ),
