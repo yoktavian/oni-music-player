@@ -124,6 +124,7 @@ class _SearchPageState extends State<SearchPage> {
                 }
 
                 final state = value as SearchState;
+                final searchPresenter = presenter as SearchPresenter;
                 final songName = state.playedSong?.trackName ?? '';
                 final artistName = state.playedSong?.artistName ?? '';
                 var playingStatusText = ' - is playing ..';
@@ -135,6 +136,8 @@ class _SearchPageState extends State<SearchPage> {
                   songName: songName,
                   artistName: artistName,
                   playingStatusText: playingStatusText,
+                  firstSong: searchPresenter.isFirstSong,
+                  lastSong: searchPresenter.isLastSong,
                   paused: musicOrganizer.isPaused,
                   played: musicOrganizer.isPlaying,
                   onPause: () {
@@ -144,6 +147,14 @@ class _SearchPageState extends State<SearchPage> {
                   onResume: () {
                     musicOrganizer.resume();
                     presenter.emit(ResumeSongPlayingEvent());
+                  },
+                  onSkipToPrevious: () {
+                    musicOrganizer.stop();
+                    presenter.emit(SkipToPreviousSongEvent());
+                  },
+                  onSkipToNext: () {
+                    musicOrganizer.stop();
+                    presenter.emit(SkipToNextSongEvent());
                   },
                 );
               },
