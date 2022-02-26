@@ -149,6 +149,10 @@ Minimum Requirement for the project:
 ## Notes:
 By default, when you open the search screen it's just an empty state. You have to search the song first by using artist name then the result would be displayed.
 
-## Sample screenshot
+## IOS
 <img src='sample_asset/sc_1.png' width='30%'/>
 <img src='sample_asset/sc_2.png' width='30%'/>
+
+## Android
+<img src='sample_asset/sc_3.png' width='30%'/>
+<img src='sample_asset/sc_4.png' width='30%'/>
