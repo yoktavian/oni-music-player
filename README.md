@@ -166,5 +166,8 @@ By default, when you open the search screen it's just an empty state. You have t
 <img src='sample_asset/sc_3.png' width='30%'/>
 <img src='sample_asset/sc_4.png' width='30%'/>
 
+## Demo
+<video src='sample_asset/sr_1.mp4' width='30%'/>
+
 ## Installing APK
 if you want to get the apk directly and install it into your device, you can check in the `sample_asset` folder, then you will find the app-debug.apk
