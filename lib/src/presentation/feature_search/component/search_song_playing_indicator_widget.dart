@@ -17,10 +17,10 @@ class SongPlayingIndicatorWidget extends StatefulWidget {
   }
 }
 
-class _SongPlayingIndicatorWidgetState
-    extends State<SongPlayingIndicatorWidget>
+class _SongPlayingIndicatorWidgetState extends State<SongPlayingIndicatorWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
+
   late Animation<double> animation;
 
   @override
@@ -57,7 +57,7 @@ class _SongPlayingIndicatorWidgetState
       height: animation.value / 2,
       decoration: BoxDecoration(
         color: widget.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
       ),
     );
   }
