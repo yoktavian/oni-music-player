@@ -1,9 +1,16 @@
 # oni_music_player
 
 - Architecture
+    - Presentation
+    - Domain
+    - Data
 - 3rd party lib
 - How to run the project
 - Features
+- Screenshot
+    - IOS
+    - Android
+- Installing apk
 
 ## Architecture
 
@@ -148,7 +155,7 @@ Minimum Requirement for the project:
 6. Skip to the next song using bottom music controller
 7. Search another song with current song still playing
 
-## Notes:
+Notes:
 By default, when you open the search screen it's just an empty state. You have to search the song first by using artist name then the result would be displayed.
 
 ## IOS
@@ -158,3 +165,6 @@ By default, when you open the search screen it's just an empty state. You have t
 ## Android
 <img src='sample_asset/sc_3.png' width='30%'/>
 <img src='sample_asset/sc_4.png' width='30%'/>
+
+## Installing APK
+if you want to get the apk directly and install it into your device, you can check in the `sample_asset` folder, then you will find the app-debug.apk
