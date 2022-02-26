@@ -6,6 +6,7 @@ import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.d
 import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
+import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_controller_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
 class SearchPage extends StatefulWidget {
@@ -72,38 +73,38 @@ class _SearchPageState extends State<SearchPage> {
 
                         return ListView.separated(
                           itemBuilder: (context, index) {
-                            final track = state.tracks[index];
-                            final selectedSong =
-                                track.trackId == state.playedSong?.trackId;
+                            final song = state.songs[index];
+                            final playedSongId = state.playedSong?.trackId;
+                            final selectedSong = song.trackId == playedSongId;
 
                             if (selectedSong && musicOrganizer.isStopped) {
-                              musicOrganizer.play(track.previewUrl);
+                              musicOrganizer.play(song.previewUrl);
                             }
 
                             return SearchResultWidget(
-                              track.artistName,
-                              track.trackName,
-                              track.collectionName,
-                              track.artworkUrl100,
+                              song.artistName,
+                              song.trackName,
+                              song.collectionName,
+                              song.artworkUrl100,
                               (play) {
                                 if (play) {
                                   musicOrganizer.stop();
                                   presenter.emit(StopSongPlayingEvent());
-                                  presenter.emit(PlaySongEvent(track));
-                                  musicOrganizer.play(track.previewUrl);
+                                  presenter.emit(PlaySongEvent(song));
+                                  musicOrganizer.play(song.previewUrl);
                                 } else {
                                   musicOrganizer.stop();
                                   presenter.emit(StopSongPlayingEvent());
                                 }
                               },
                               playing: selectedSong && musicOrganizer.isPlaying,
-                              key: ObjectKey(track.trackId),
+                              key: ObjectKey(song.trackId),
                             );
                           },
                           separatorBuilder: (context, index) {
                             return const SizedBox(height: 8);
                           },
-                          itemCount: state.tracks.length,
+                          itemCount: state.songs.length,
                         );
                       },
                     ),
@@ -114,73 +115,36 @@ class _SearchPageState extends State<SearchPage> {
             ValueListenableBuilder(
               valueListenable: presenter.state,
               builder: (context, value, widget) {
-                final showControlMenu = musicOrganizer.isPlaying || musicOrganizer.isPaused;
-                if (!showControlMenu) return const SizedBox.shrink();
+                final isPlaying = musicOrganizer.isPlaying;
+                final isPaused = musicOrganizer.isPaused;
+                final showControlMenu = isPlaying || isPaused;
 
-                final state = value as SearchState;
-                final playedSong = state.playedSong?.trackName ?? '';
-                var playingState = ' - is playing ..';
-                if (musicOrganizer.isPaused) {
-                  playingState = ' - is paused ..';
+                if (!showControlMenu) {
+                  return const SizedBox.shrink();
                 }
 
-                return Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    color: Colors.white30,
-                  ),
-                  child: Row(
-                    children: [
-                      if (musicOrganizer.isPlaying)
-                        InkWell(
-                          onTap: () {
-                            musicOrganizer.pause();
-                            presenter.emit(PauseSongPlayingEvent());
-                          },
-                          child: const Icon(
-                            Icons.pause_circle,
-                            color: Colors.redAccent,
-                          ),
-                        )
-                      else
-                        InkWell(
-                          onTap: () {
-                            musicOrganizer.resume();
-                            presenter.emit(ResumeSongPlayingEvent());
-                          },
-                          child: const Icon(
-                            Icons.play_arrow,
-                            color: Colors.tealAccent,
-                          ),
-                        ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: playedSong,
-                                style: const TextStyle(color: Colors.white60),
-                              ),
-                              TextSpan(
-                                text: playingState,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ),
-                    ],
-                  ),
+                final state = value as SearchState;
+                final songName = state.playedSong?.trackName ?? '';
+                final artistName = state.playedSong?.artistName ?? '';
+                var playingStatusText = ' - is playing ..';
+                if (musicOrganizer.isPaused) {
+                  playingStatusText = ' - is paused ..';
+                }
+
+                return SongPlayingControllerWidget(
+                  songName: songName,
+                  artistName: artistName,
+                  playingStatusText: playingStatusText,
+                  paused: musicOrganizer.isPaused,
+                  played: musicOrganizer.isPlaying,
+                  onPause: () {
+                    musicOrganizer.pause();
+                    presenter.emit(PauseSongPlayingEvent());
+                  },
+                  onResume: () {
+                    musicOrganizer.resume();
+                    presenter.emit(ResumeSongPlayingEvent());
+                  },
                 );
               },
             ),

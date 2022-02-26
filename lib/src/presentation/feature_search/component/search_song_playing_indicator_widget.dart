@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-class TrackPlayingIndicatorWidget extends StatefulWidget {
+class SongPlayingIndicatorWidget extends StatefulWidget {
   final Color color;
 
   final Duration duration;
 
-  const TrackPlayingIndicatorWidget(
+  const SongPlayingIndicatorWidget(
     this.color,
     this.duration, {
     Key? key,
   }) : super(key: key);
 
   @override
-  State<TrackPlayingIndicatorWidget> createState() {
-    return _TrackPlayingIndicatorWidgetState();
+  State<SongPlayingIndicatorWidget> createState() {
+    return _SongPlayingIndicatorWidgetState();
   }
 }
 
-class _TrackPlayingIndicatorWidgetState
-    extends State<TrackPlayingIndicatorWidget>
+class _SongPlayingIndicatorWidgetState
+    extends State<SongPlayingIndicatorWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;

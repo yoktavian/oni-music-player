@@ -6,18 +6,18 @@ import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.d
 import 'package:async/async.dart';
 
 class SearchState {
-  List<Track> tracks;
+  List<Track> songs;
 
   Track? playedSong;
 
-  SearchState({this.tracks = const [], this.playedSong});
+  SearchState({this.songs = const [], this.playedSong});
 
   SearchState copy({
-    List<Track>? tracks,
+    List<Track>? songs,
     Track? playedSong,
   }) {
     return SearchState(
-      tracks: tracks ?? this.tracks,
+      songs: songs ?? this.songs,
       playedSong: playedSong ?? this.playedSong,
     );
   }
@@ -67,7 +67,7 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
     } else if (event is PlaySongEvent) {
       state.value = state.value.copy(playedSong: event.track);
     } else if (event is StopSongPlayingEvent) {
-      state.value = SearchState().copy(tracks: state.value.tracks);
+      state.value = SearchState().copy(songs: state.value.songs);
     } else if (event is PauseSongPlayingEvent) {
       // just set the copy of current state to update the ui.
       state.value = state.value.copy();
@@ -86,14 +86,14 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
 
     if (response is ValueResult) {
       state.value = state.value.copy(
-        tracks: response.asValue.value.results,
+        songs: response.asValue.value.results,
       );
     }
   }
 
   void _onStateChanged(OniMusicState musicState) {
     if (musicState == OniMusicState.completed) {
-      state.value = SearchState().copy(tracks: state.value.tracks);
+      state.value = SearchState().copy(songs: state.value.songs);
     } else {
       state.value = state.value.copy();
     }

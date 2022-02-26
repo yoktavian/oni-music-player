@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
-import 'package:oni_music_player/src/presentation/feature_search/component/search_track_playing_visualizer_widget.dart';
+import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_visualizer_widget.dart';
 
 class SearchResultWidget extends StatelessWidget {
   final String songName;
@@ -101,7 +101,7 @@ class SearchResultWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (playing) ...[
-                  const MusicVisualizerWidget(
+                  const SongPlayingVisualizerWidget(
                     [
                       Colors.greenAccent,
                       Colors.yellow,
