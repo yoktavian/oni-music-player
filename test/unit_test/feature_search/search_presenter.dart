@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:async/async.dart';
-import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
+import 'package:oni_music_player/src/data/feature_search/response/song_response.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
-import 'package:oni_music_player/src/domain/feature_search/entity/track.dart';
+import 'package:oni_music_player/src/domain/feature_search/entity/song.dart';
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
 import 'fake_data/fake_search_repository.dart';
@@ -14,10 +14,10 @@ void main() {
     'Then the state must be updated according to the response.',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         2,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             10,
@@ -27,7 +27,7 @@ void main() {
             'anyArtwork100',
             'anyurl',
           ),
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -67,7 +67,7 @@ void main() {
     'updated according to selected song.',
     () async {
       // given
-      const selectedSong = Track(
+      const selectedSong = Song(
         1,
         'rich-brian',
         10,
@@ -77,11 +77,11 @@ void main() {
         'anyArtwork100',
         'anyurl',
       );
-      final response = TrackResponse(
+      final response = SongResponse(
         2,
         [
           selectedSong,
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -114,10 +114,10 @@ void main() {
     'Then the value of playedSong in state must be reset to null.',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         1,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -150,10 +150,10 @@ void main() {
     'Then the state value must be the same with the previous one',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         1,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -192,10 +192,10 @@ void main() {
     'Then the state value must be the same with the previous one',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         1,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -234,10 +234,10 @@ void main() {
     'Then the state value must be the same with the previous one',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         1,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,
@@ -278,10 +278,10 @@ void main() {
     'Then the playedSong state must be reset to null',
     () async {
       // given
-      final response = TrackResponse(
+      final response = SongResponse(
         1,
         [
-          const Track(
+          const Song(
             1,
             'rich-brian',
             12,

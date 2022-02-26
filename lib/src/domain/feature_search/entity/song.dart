@@ -1,4 +1,4 @@
-class Track {
+class Song {
   final int artistId;
   final String artistName;
   final int trackId;
@@ -8,7 +8,7 @@ class Track {
   final String artworkUrl100;
   final String previewUrl;
 
-  const Track(
+  const Song(
     this.artistId,
     this.artistName,
     this.trackId,

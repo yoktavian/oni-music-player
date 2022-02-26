@@ -1,7 +1,7 @@
-import 'package:oni_music_player/src/domain/feature_search/entity/track.dart';
+import 'package:oni_music_player/src/domain/feature_search/entity/song.dart';
 
-class TrackModel extends Track {
-  TrackModel(
+class SongModel extends Song {
+  SongModel(
     int artistId,
     String artistName,
     int trackId,
@@ -21,8 +21,8 @@ class TrackModel extends Track {
     previewUrl,
   );
 
-  factory TrackModel.fromJson(Map<String, dynamic> json) {
-    return TrackModel(
+  factory SongModel.fromJson(Map<String, dynamic> json) {
+    return SongModel(
       json['artistId'] as int,
       json['artistName'] as String,
       json['trackId'] as int,

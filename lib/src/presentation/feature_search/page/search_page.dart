@@ -3,7 +3,7 @@ import 'package:oni_music_player/src/data/base/organizer/oni_music_organizer_imp
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
-import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_controller_widget.dart';
@@ -46,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorPalette.bleachedCedar,
+      backgroundColor: OniColorToken.bleachedCedar,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

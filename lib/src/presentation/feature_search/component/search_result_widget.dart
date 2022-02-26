@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_visualizer_widget.dart';
 
 class SearchResultWidget extends StatelessWidget {
@@ -35,9 +35,9 @@ class SearchResultWidget extends StatelessWidget {
         ),
         gradient: LinearGradient(
           colors: [
-            ColorPalette.mineShaft,
-            ColorPalette.mineShaft,
-            ColorPalette.bleachedCedar,
+            OniColorToken.mineShaft,
+            OniColorToken.mineShaft,
+            OniColorToken.bleachedCedar,
           ],
         ),
       ),
