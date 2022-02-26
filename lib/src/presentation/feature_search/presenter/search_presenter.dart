@@ -37,17 +37,15 @@ class PlaySongEvent extends SearchEvent {
   PlaySongEvent(this.track);
 }
 
-class StopSongPlayingEvent extends SearchEvent {
-  StopSongPlayingEvent();
-}
+class StopSongPlayingEvent extends SearchEvent {}
 
-class PauseSongPlayingEvent extends SearchEvent {
-  PauseSongPlayingEvent();
-}
+class PauseSongPlayingEvent extends SearchEvent {}
 
-class ResumeSongPlayingEvent extends SearchEvent {
-  ResumeSongPlayingEvent();
-}
+class ResumeSongPlayingEvent extends SearchEvent {}
+
+class SkipToPreviousSongEvent extends SearchEvent {}
+
+class SkipToNextSongEvent extends SearchEvent {}
 
 class OnMusicPlayerStateChangedEvent extends SearchEvent {
   final OniMusicState state;
@@ -58,7 +56,9 @@ class OnMusicPlayerStateChangedEvent extends SearchEvent {
 class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
   final SearchRepository _repository;
 
-  SearchPresenter(this._repository,) : super(ValueNotifier(SearchState()));
+  SearchPresenter(
+    this._repository,
+  ) : super(ValueNotifier(SearchState()));
 
   @override
   void mapEvent(SearchEvent event) {
@@ -76,6 +76,10 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
       state.value = state.value.copy();
     } else if (event is OnMusicPlayerStateChangedEvent) {
       _onStateChanged(event.state);
+    } else if (event is SkipToPreviousSongEvent) {
+      _skipToPreviousSong(state.value.playedSong);
+    } else if (event is SkipToNextSongEvent) {
+      _skipToNextSong(state.value.playedSong);
     }
   }
 
@@ -97,5 +101,35 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
     } else {
       state.value = state.value.copy();
     }
+  }
+
+  void _skipToPreviousSong(Song? currentSong) {
+    if (currentSong == null || isFirstSong) return;
+    final songIndex = state.value.songs.indexOf(currentSong);
+    final previousSong = state.value.songs[songIndex - 1];
+    state.value = state.value.copy(playedSong: previousSong);
+  }
+
+  void _skipToNextSong(Song? currentSong) {
+    if (currentSong == null || isLastSong) return;
+    final songIndex = state.value.songs.indexOf(currentSong);
+    final nextSong = state.value.songs[songIndex + 1];
+    state.value = state.value.copy(playedSong: nextSong);
+  }
+
+  bool get isLastSong {
+    final currentSong = state.value.playedSong;
+    if (currentSong == null) return false;
+    final songIndex = state.value.songs.indexOf(currentSong);
+    final latestSongIndex = state.value.songs.length - 1;
+    return songIndex == latestSongIndex;
+  }
+
+  bool get isFirstSong {
+    final currentSong = state.value.playedSong;
+    if (currentSong == null) return false;
+    final songIndex = state.value.songs.indexOf(currentSong);
+    const firstSongIndex = 0;
+    return songIndex == firstSongIndex;
   }
 }

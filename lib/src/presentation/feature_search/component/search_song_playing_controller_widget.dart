@@ -11,9 +11,17 @@ class SongPlayingControllerWidget extends StatelessWidget {
 
   final bool played;
 
+  final bool firstSong;
+
+  final bool lastSong;
+
   final VoidCallback onPause;
 
   final VoidCallback onResume;
+
+  final VoidCallback onSkipToPrevious;
+
+  final VoidCallback onSkipToNext;
 
   const SongPlayingControllerWidget({
     Key? key,
@@ -24,6 +32,10 @@ class SongPlayingControllerWidget extends StatelessWidget {
     required this.played,
     required this.onPause,
     required this.onResume,
+    required this.onSkipToPrevious,
+    required this.onSkipToNext,
+    required this.firstSong,
+    required this.lastSong,
   }) : super(key: key);
 
   @override
@@ -45,6 +57,13 @@ class SongPlayingControllerWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
+          InkWell(
+            onTap: firstSong ? null : onSkipToPrevious,
+            child: Icon(
+              Icons.skip_previous,
+              color: firstSong ? Colors.white12 : Colors.tealAccent,
+            ),
+          ),
           if (played)
             InkWell(
               onTap: onPause,
@@ -61,6 +80,13 @@ class SongPlayingControllerWidget extends StatelessWidget {
                 color: Colors.tealAccent,
               ),
             ),
+          InkWell(
+            onTap: lastSong ? null : onSkipToNext,
+            child: Icon(
+              Icons.skip_next,
+              color: lastSong ? Colors.white12 : Colors.tealAccent,
+            ),
+          ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
