@@ -144,7 +144,9 @@ Minimum Requirement for the project:
 2. Play song with some animation on the list item as an indicator
 3. Pause the song using bottom music controller
 4. Resume the song using bottom music controller
-5. Search another song with current song still playing
+5. Skip to the previous song using bottom music controller
+6. Skip to the next song using bottom music controller
+7. Search another song with current song still playing
 
 ## Notes:
 By default, when you open the search screen it's just an empty state. You have to search the song first by using artist name then the result would be displayed.
