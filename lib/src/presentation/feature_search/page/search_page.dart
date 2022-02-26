@@ -73,7 +73,8 @@ class _SearchPageState extends State<SearchPage> {
                         return ListView.separated(
                           itemBuilder: (context, index) {
                             final track = state.tracks[index];
-                            final selectedSong = track.trackId == state.playedSong?.trackId;
+                            final selectedSong =
+                                track.trackId == state.playedSong?.trackId;
 
                             if (selectedSong && musicOrganizer.isStopped) {
                               musicOrganizer.play(track.previewUrl);
@@ -116,6 +117,13 @@ class _SearchPageState extends State<SearchPage> {
                 final showControlMenu = musicOrganizer.isPlaying || musicOrganizer.isPaused;
                 if (!showControlMenu) return const SizedBox.shrink();
 
+                final state = value as SearchState;
+                final playedSong = state.playedSong?.trackName ?? '';
+                var playingState = ' - is playing ..';
+                if (musicOrganizer.isPaused) {
+                  playingState = ' - is paused ..';
+                }
+
                 return Container(
                   padding: const EdgeInsets.all(16),
                   decoration: const BoxDecoration(
@@ -134,8 +142,8 @@ class _SearchPageState extends State<SearchPage> {
                             presenter.emit(PauseSongPlayingEvent());
                           },
                           child: const Icon(
-                            Icons.close,
-                            color: Colors.white30,
+                            Icons.pause_circle,
+                            color: Colors.redAccent,
                           ),
                         )
                       else
@@ -146,9 +154,31 @@ class _SearchPageState extends State<SearchPage> {
                           },
                           child: const Icon(
                             Icons.play_arrow,
-                            color: Colors.white30,
+                            color: Colors.tealAccent,
                           ),
-                        )
+                        ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: playedSong,
+                                style: const TextStyle(color: Colors.white60),
+                              ),
+                              TextSpan(
+                                text: playingState,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
                     ],
                   ),
                 );

@@ -113,7 +113,7 @@ class SearchResultWidget extends StatelessWidget {
                   InkWell(
                     onTap: () => onPlayStatusChanged(false),
                     child: const Icon(
-                      Icons.pause,
+                      Icons.stop,
                       size: 24,
                       color: Colors.redAccent,
                     ),
@@ -124,7 +124,7 @@ class SearchResultWidget extends StatelessWidget {
                     child: const Icon(
                       Icons.play_arrow,
                       size: 24,
-                      color: Colors.redAccent,
+                      color: Colors.tealAccent,
                     ),
                   ),
               ],
