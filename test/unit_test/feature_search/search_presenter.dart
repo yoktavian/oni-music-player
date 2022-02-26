@@ -298,7 +298,13 @@ void main() {
         FakeSearchRepository.success(Result.value(response)),
       );
       searchPresenter.emit(SearchSongEvent('any'));
-      searchPresenter.emit(PlaySongEvent(response.results.first));
+      // simulate future delay from api request.
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+            () {
+          searchPresenter.emit(PlaySongEvent(response.results.first));
+        },
+      );
       // when playing a song, the state of playedSong must be not null.
       expect(
         searchPresenter.state.value.playedSong,
@@ -315,6 +321,161 @@ void main() {
         searchPresenter.state.value.playedSong,
         null,
       );
+    },
+  );
+
+  test(
+    'Given first song played, '
+    'When emit skip to previous event '
+    'Then should do nothing, the state must be the same with the previous',
+    () async {
+      // given
+      final response = SongResponse(
+        1,
+        [
+          const Song(
+            1,
+            'rich-brian',
+            12,
+            'any-song-1',
+            'any-album',
+            'anyArtwork60',
+            'anyArtwork100',
+            'anyurl',
+          ),
+        ],
+      );
+
+      final searchPresenter = SearchPresenter(
+        FakeSearchRepository.success(Result.value(response)),
+      );
+      searchPresenter.emit(SearchSongEvent('any'));
+      // simulate future delay from api request.
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+        () {
+          searchPresenter.emit(PlaySongEvent(response.results.first));
+        },
+      );
+      final currentState = searchPresenter.state;
+
+      // when
+      searchPresenter.emit(SkipToPreviousSongEvent());
+
+      // then
+      expect(currentState, searchPresenter.state);
+    },
+  );
+
+  test(
+    'Given second song played, '
+    'When emit skip to the previous song event '
+    'Then should play the first order of the song.',
+    () async {
+      // given
+      final response = SongResponse(
+        1,
+        [
+          const Song(
+            1,
+            'rich-brian',
+            12,
+            'any-song-1',
+            'any-album',
+            'anyArtwork60',
+            'anyArtwork100',
+            'anyurl',
+          ),
+          const Song(
+            12,
+            'rich-brian',
+            4,
+            'any-song-1',
+            'any-album',
+            'anyArtwork60',
+            'anyArtwork100',
+            'anyurl',
+          ),
+        ],
+      );
+
+      final searchPresenter = SearchPresenter(
+        FakeSearchRepository.success(Result.value(response)),
+      );
+      searchPresenter.emit(SearchSongEvent('any'));
+      // simulate future delay from api request.
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+        () {
+          // simulate second song selected.
+          searchPresenter.emit(PlaySongEvent(response.results[1]));
+        },
+      );
+      final currentSongPlaying = searchPresenter.state.value.playedSong;
+
+      // when
+      searchPresenter.emit(SkipToPreviousSongEvent());
+      final newSongPlaying = searchPresenter.state.value.playedSong;
+
+      // then
+      expect(currentSongPlaying != newSongPlaying, true);
+      expect(newSongPlaying == searchPresenter.state.value.songs.first, true);
+    },
+  );
+
+  test(
+    'Given first song played, '
+    'When emit skip to the next song event '
+    'Then should play the second order of the song.',
+    () async {
+      // given
+      final response = SongResponse(
+        1,
+        [
+          const Song(
+            1,
+            'rich-brian',
+            12,
+            'any-song-1',
+            'any-album',
+            'anyArtwork60',
+            'anyArtwork100',
+            'anyurl',
+          ),
+          const Song(
+            12,
+            'rich-brian',
+            4,
+            'any-song-1',
+            'any-album',
+            'anyArtwork60',
+            'anyArtwork100',
+            'anyurl',
+          ),
+        ],
+      );
+
+      final searchPresenter = SearchPresenter(
+        FakeSearchRepository.success(Result.value(response)),
+      );
+      searchPresenter.emit(SearchSongEvent('any'));
+      // simulate future delay from api request.
+      await Future.delayed(
+        const Duration(milliseconds: 50),
+        () {
+          // simulate second song selected.
+          searchPresenter.emit(PlaySongEvent(response.results.first));
+        },
+      );
+      final currentSongPlaying = searchPresenter.state.value.playedSong;
+
+      // when
+      searchPresenter.emit(SkipToNextSongEvent());
+      final newSongPlaying = searchPresenter.state.value.playedSong;
+
+      // then
+      expect(currentSongPlaying != newSongPlaying, true);
+      expect(newSongPlaying == searchPresenter.state.value.songs[1], true);
     },
   );
 }

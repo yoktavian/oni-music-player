@@ -104,23 +104,17 @@ class SearchPresenter extends OniPresenter<SearchState, SearchEvent> {
   }
 
   void _skipToPreviousSong(Song? currentSong) {
-    if (currentSong == null) return;
+    if (currentSong == null || isFirstSong) return;
     final songIndex = state.value.songs.indexOf(currentSong);
-    const firstIndex = 0;
-    if (songIndex > firstIndex) {
-      final previousSong = state.value.songs[songIndex - 1];
-      state.value = state.value.copy(playedSong: previousSong);
-    }
+    final previousSong = state.value.songs[songIndex - 1];
+    state.value = state.value.copy(playedSong: previousSong);
   }
 
   void _skipToNextSong(Song? currentSong) {
-    if (currentSong == null) return;
+    if (currentSong == null || isLastSong) return;
     final songIndex = state.value.songs.indexOf(currentSong);
-    final lastIndexOfSongs = state.value.songs.length - 1;
-    if (songIndex < lastIndexOfSongs) {
-      final nextSong = state.value.songs[songIndex + 1];
-      state.value = state.value.copy(playedSong: nextSong);
-    }
+    final nextSong = state.value.songs[songIndex + 1];
+    state.value = state.value.copy(playedSong: nextSong);
   }
 
   bool get isLastSong {
