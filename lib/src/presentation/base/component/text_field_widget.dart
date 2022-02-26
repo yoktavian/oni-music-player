@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// just a basic text field component with a custom design.
+/// what property that you can set?
+/// 1. placeholder (optional)
+/// 2. placeholder color (optional)
+/// 3. text color (optional)
+/// 4. onChanged (optional)
+/// 5. onSubmitted (optional)
 class TextFieldWidget extends StatelessWidget {
   final String placeholder;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ColorPalette {
+/// just an additional color.
+class OniColorToken {
   static const Color bleachedCedar = Color(0xFF241C2C);
   static const Color mineShaft = Color(0xFF343434);
   static const Color ebonyClay = Color(0xFF242C34);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/presentation/base/component/text_field_widget.dart';
-import 'package:oni_music_player/src/presentation/base/style/color_pallete.dart';
+import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dart';
 
 class SearchHeaderWidget extends StatelessWidget {
   final String greetingLabel;
@@ -38,8 +38,8 @@ class SearchHeaderWidget extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  ColorPalette.mineShaft,
-                  ColorPalette.bleachedCedar,
+                  OniColorToken.mineShaft,
+                  OniColorToken.bleachedCedar,
                 ],
               ),
             ),

@@ -1,20 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
-import 'package:oni_music_player/src/domain/feature_search/entity/track.dart';
+import 'package:oni_music_player/src/domain/feature_search/entity/song.dart';
 import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
 import 'package:async/async.dart';
 
 class SearchState {
-  List<Track> songs;
+  List<Song> songs;
 
-  Track? playedSong;
+  Song? playedSong;
 
   SearchState({this.songs = const [], this.playedSong});
 
   SearchState copy({
-    List<Track>? songs,
-    Track? playedSong,
+    List<Song>? songs,
+    Song? playedSong,
   }) {
     return SearchState(
       songs: songs ?? this.songs,
@@ -32,7 +32,7 @@ class SearchSongEvent extends SearchEvent {
 }
 
 class PlaySongEvent extends SearchEvent {
-  final Track track;
+  final Song track;
 
   PlaySongEvent(this.track);
 }

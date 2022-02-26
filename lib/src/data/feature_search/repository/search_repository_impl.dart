@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:oni_api/oni_api.dart';
 import 'package:async/async.dart';
 import 'package:oni_music_player/src/data/client/ItuneClient.dart';
-import 'package:oni_music_player/src/data/feature_search/response/track_response.dart';
+import 'package:oni_music_player/src/data/feature_search/response/song_response.dart';
 import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 
 class SearchRepositoryImpl extends SearchRepository {
@@ -32,6 +32,6 @@ class SearchRepositoryImpl extends SearchRepository {
   }
 }
 
-TrackResponse _parseTrackResponse(json) {
-  return TrackResponse.fromJson(json);
+SongResponse _parseTrackResponse(json) {
+  return SongResponse.fromJson(json);
 }
