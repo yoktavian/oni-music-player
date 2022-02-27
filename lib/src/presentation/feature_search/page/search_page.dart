@@ -140,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                 final showControlMenu = isPlaying || isPaused;
 
                 if (!showControlMenu) {
-                  return const SizedBox.shrink(key: const Key('null'),);
+                  return const SizedBox.shrink();
                 }
 
                 final state = value as SearchState;

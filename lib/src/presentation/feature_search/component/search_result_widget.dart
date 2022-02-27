@@ -4,7 +4,9 @@ import 'package:oni_music_player/src/presentation/feature_search/component/searc
 
 class SearchResultWidget extends StatelessWidget {
   static const playButtonKey = 'play-button-';
+
   static const stopButtonKey = 'stop-button-';
+
   static const visualizerIndicatorKey = 'visualizer-indicator';
 
   final String songName;
