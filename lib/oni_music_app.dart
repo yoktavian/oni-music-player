@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/core/service_locator/service_locator.dart';
+import 'package:oni_music_player/src/core/service/service_locator.dart';
 import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
 import 'package:oni_music_player/src/presentation/feature_search/router/search_router.dart';
 

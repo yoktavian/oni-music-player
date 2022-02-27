@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:oni_music_player/src/core/service_locator/service_factory.dart';
-import 'package:oni_music_player/src/core/service_locator/service_locator.dart';
+import 'package:oni_music_player/src/core/service/service_factory.dart';
+import 'package:oni_music_player/src/core/service/service_locator.dart';
 
 class ServiceLocatorImpl extends ServiceLocator {
   @override
@@ -12,9 +12,9 @@ class ServiceLocatorImpl extends ServiceLocator {
   @override
   T getIt<T>() {
     final container = serviceContainer[T];
-    if (container == null) throw('$T is not registered yet in the service locator');
+    if (container != null) return container.object() as T;
 
-    return container.object() as T;
+    throw ('$T is not registered yet in the service locator');
   }
 
   @override
