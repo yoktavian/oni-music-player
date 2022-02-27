@@ -3,6 +3,12 @@ import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dar
 import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_visualizer_widget.dart';
 
 class SearchResultWidget extends StatelessWidget {
+  static const playButtonKey = 'play-button-';
+
+  static const stopButtonKey = 'stop-button-';
+
+  static const visualizerIndicatorKey = 'visualizer-indicator';
+
   final String songName;
 
   final String artistName;
@@ -109,8 +115,10 @@ class SearchResultWidget extends StatelessWidget {
                       Colors.redAccent,
                     ],
                     [1000, 1800, 2000, 900],
+                    key: Key(visualizerIndicatorKey),
                   ),
                   InkWell(
+                    key: const Key(playButtonKey),
                     onTap: () => onPlayStatusChanged(false),
                     child: const Icon(
                       Icons.stop,
@@ -120,6 +128,7 @@ class SearchResultWidget extends StatelessWidget {
                   ),
                 ] else
                   InkWell(
+                    key: const Key(playButtonKey),
                     onTap: () => onPlayStatusChanged(true),
                     child: const Icon(
                       Icons.play_arrow,

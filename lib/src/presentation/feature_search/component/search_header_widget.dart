@@ -3,6 +3,8 @@ import 'package:oni_music_player/src/presentation/base/component/text_field_widg
 import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dart';
 
 class SearchHeaderWidget extends StatelessWidget {
+  static const searchTextFieldKey = 'search-text-field';
+
   final String greetingLabel;
 
   final String name;
@@ -70,6 +72,7 @@ class SearchHeaderWidget extends StatelessWidget {
               SizedBox(
                 height: 36,
                 child: TextFieldWidget(
+                  key: const Key(searchTextFieldKey),
                   onChanged: onKeywordChanged,
                   onSubmitted: onKeywordSubmitted,
                   placeholder: searchPlaceholder,

@@ -10,13 +10,6 @@ enum OniMusicState { playing, stop, pause, resume, completed }
 /// changes in presentation layer and the changes is should be done in the
 /// class implementation only.
 abstract class OniMusicOrganizer<S> {
-  /// for state listener like playing, pause, stop, etc.
-  final ValueChanged<OniMusicState> onStateChanged;
-
-  OniMusicOrganizer(this.onStateChanged) {
-    listenState();
-  }
-
   /// to play the music by url
   void play(String url);
 
@@ -37,5 +30,5 @@ abstract class OniMusicOrganizer<S> {
 
   void disposed();
 
-  void listenState();
+  void listenState(ValueChanged<OniMusicState> onStateChanged);
 }

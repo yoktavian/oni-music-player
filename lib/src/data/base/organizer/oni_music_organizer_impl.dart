@@ -6,10 +6,9 @@ class OniMusicOrganizerImpl extends OniMusicOrganizer {
   final AudioPlayer player;
 
   OniMusicOrganizerImpl({
-    required ValueChanged<OniMusicState> onStateChanged,
     AudioPlayer? audioPlayer,
   })  : player = audioPlayer ?? AudioPlayer(),
-        super(onStateChanged);
+        super();
 
   @override
   void pause() {
@@ -46,7 +45,7 @@ class OniMusicOrganizerImpl extends OniMusicOrganizer {
   }
 
   @override
-  void listenState() {
+  void listenState(ValueChanged<OniMusicState> onStateChanged) {
     player.onPlayerStateChanged.listen(
       (state) {
         switch (state) {

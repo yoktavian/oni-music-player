@@ -5,6 +5,6 @@ import 'package:oni_music_player/src/presentation/feature_search/page/search_pag
 class SearchRouter extends OniRouter {
   @override
   Map<String, WidgetBuilder> get routes => {
-    '/': (context) => const SearchPage(),
+    '/': (context) => SearchPage(),
   };
 }
