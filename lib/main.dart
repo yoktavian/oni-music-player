@@ -1,34 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
-import 'package:oni_music_player/src/presentation/feature_search/router/search_router.dart';
+import 'package:oni_music_player/oni_music_app.dart';
+import 'package:oni_music_player/src/core/service_locator/service_locator_impl.dart';
+import 'package:oni_music_player/src/core/service_locator/service_locator_provider.dart';
+import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
+import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 
 void main() {
-  runApp(const _OniMusicApp());
+  final serviceLocator = ServiceLocatorImpl();
+  _initializeServiceFactory(serviceLocator);
+
+  runApp(
+    ServiceLocatorProvider(
+      serviceLocator: serviceLocator,
+      child: OniMusicApp(
+        serviceLocator: serviceLocator,
+      ),
+    ),
+  );
 }
 
-class _OniMusicApp extends StatelessWidget {
-  const _OniMusicApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      routes: _populateRoutes([
-        SearchRouter(),
-      ]),
-    );
-  }
-
-  Map<String, Widget Function(BuildContext)> _populateRoutes(
-    List<OniRouter> route,
-  ) {
-    final Map<String, Widget Function(BuildContext)> routes = {};
-    for (var router in route) {
-      routes.addAll(router.routes);
-    }
-    return routes;
-  }
+void _initializeServiceFactory(ServiceLocatorImpl serviceLocator) {
+  serviceLocator.registerFactory<SearchRepository>(
+    () => SearchRepositoryImpl(),
+  );
 }
