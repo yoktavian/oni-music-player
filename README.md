@@ -108,7 +108,7 @@ How the presenter can update the UI? as you can see on the `OniPresenter` our st
 
 C. Page
 
-Nothing special here, as simple as create a statefull widget then you have to depends on the `presenter` and also use `ValueListenableBuilder` for the widget that need to rebuild everytime the `state` is changed. And also please refer to the rules that i previously mention about we have to depends on the abstraction instead of the class implementation.
+Nothing special here, as simple as create a statefull widget then you have to depends on the `presenter` and also use `ValueListenableBuilder` for the widget that need to rebuild everytime the `state` is changed. And also please refer to the rules that i previously mention about we have to depends on the abstraction instead of the class implementation. For any kind of api that need to call network like repository and music player you have to make it as a page properties that can be passed outside the screen, so we can pass fake implementation for test reason.
 
 ### Domain Layer
 
