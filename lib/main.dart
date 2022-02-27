@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:oni_music_player/oni_music_app.dart';
-import 'package:oni_music_player/src/core/service/service_locator_impl.dart';
-import 'package:oni_music_player/src/core/service/service_locator_provider.dart';
 import 'package:oni_music_player/src/data/base/organizer/oni_music_organizer_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
+import 'package:oni_service_locator/oni_service_locator.dart';
 
 void main() async {
-  final serviceLocator = ServiceLocatorImpl();
+  final serviceLocator = OniServiceLocatorImpl();
   await _initializeServiceFactory(serviceLocator);
 
   runApp(
-    ServiceLocatorProvider(
+    OniServiceLocatorProvider(
       serviceLocator: serviceLocator,
       child: OniMusicApp(
         serviceLocator: serviceLocator,
@@ -22,7 +21,7 @@ void main() async {
 }
 
 Future<void> _initializeServiceFactory(
-  ServiceLocatorImpl serviceLocator,
+  OniServiceLocator serviceLocator,
 ) async {
   serviceLocator
     ..registerFactory<SearchRepository>(

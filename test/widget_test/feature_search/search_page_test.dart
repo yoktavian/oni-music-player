@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:oni_music_player/src/core/service/service_locator_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/response/song_response.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/domain/feature_search/entity/song.dart';
@@ -11,13 +10,14 @@ import 'package:oni_music_player/src/domain/feature_search/repository/search_rep
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/page/search_page.dart';
+import 'package:oni_service_locator/oni_service_locator.dart';
 
 import '../../base/fake_data/fake_http_client.dart';
 import '../../base/fake_data/fake_music_organizer.dart';
 import '../../base/fake_data/fake_search_repository.dart';
 
 void main() {
-  final serviceLocator = ServiceLocatorImpl();
+  final serviceLocator = OniServiceLocatorImpl();
 
   testWidgets(
     'Given search page with no song playing '

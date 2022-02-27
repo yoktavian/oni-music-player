@@ -21,17 +21,17 @@
 ### Project Structure
 ```
 Main
-|---Presentation
-|   |-feature-x
-|     |-route
-|     |-page
-|     |-etc
+|--- Presentation
+|   |- Feature-x
+|     |- Route
+|     |- page
+|     |- etc
 |
-|---Domain
-|   |-feature-x
+|--- Domain
+|   |- Feature-x
 |
-|---Data
-|   |-feature-x
+|--- Data
+|   |- Feature-x
 ```
 
 This is the framework how the project structure is for oni music player project. As you can see here, i tried to seperate some modules into 3 layers:

@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
-import 'package:oni_music_player/src/core/service/service_locator_provider.dart';
 import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
 import 'package:oni_music_player/src/presentation/feature_search/page/search_page.dart';
+import 'package:oni_service_locator/oni_service_locator.dart';
 
 class SearchRouter extends OniRouter {
   @override
   Map<String, WidgetBuilder> get routes => {
         '/': (context) {
           return SearchPage(
-            serviceLocator: ServiceLocatorProvider.of(context),
+            serviceLocator: OniServiceLocatorProvider.of(context),
           );
         },
       };

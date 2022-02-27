@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/core/service/service_locator.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
 import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
@@ -8,6 +7,7 @@ import 'package:oni_music_player/src/presentation/feature_search/component/searc
 import 'package:oni_music_player/src/presentation/feature_search/component/search_result_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_controller_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
+import 'package:oni_service_locator/oni_service_locator.dart';
 
 class SearchPage extends StatefulWidget {
   static const searchHeaderKey = 'search-bar';
@@ -16,7 +16,7 @@ class SearchPage extends StatefulWidget {
 
   static const searchMusicControllerKey = 'search-music-controller';
 
-  final ServiceLocator serviceLocator;
+  final OniServiceLocator serviceLocator;
 
   const SearchPage({
     Key? key,

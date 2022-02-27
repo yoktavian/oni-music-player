@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oni_music_player/src/core/service/service_locator.dart';
 import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
 import 'package:oni_music_player/src/presentation/feature_search/router/search_router.dart';
+import 'package:oni_service_locator/oni_service_locator.dart';
 
 class OniMusicApp extends StatefulWidget {
-  final ServiceLocator serviceLocator;
+  final OniServiceLocator serviceLocator;
 
   const OniMusicApp({
     Key? key,
