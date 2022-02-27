@@ -71,17 +71,17 @@ void main() {
 
       // then
       final searchHeaderFinder = find.byKey(
-        const Key(SearchView.searchHeaderKey),
+        const Key(SearchPage.searchHeaderKey),
       );
       expect(searchHeaderFinder, findsOneWidget);
 
       final searchResultListFinder = find.byKey(
-        const Key(SearchView.searchResultListKey),
+        const Key(SearchPage.searchResultListKey),
       );
       expect(searchResultListFinder, findsOneWidget);
 
       final searchMusicControllerFinder = find.byKey(
-        const Key(SearchView.searchMusicControllerKey),
+        const Key(SearchPage.searchMusicControllerKey),
       );
       expect(searchMusicControllerFinder, findsNothing);
       serviceLocator.clear();
@@ -283,7 +283,7 @@ void main() {
         expect(visualizerIndicatorFinder, findsOneWidget);
 
         final musicControllerFinder = find.byKey(
-          const Key(SearchView.searchMusicControllerKey),
+          const Key(SearchPage.searchMusicControllerKey),
         );
         expect(musicControllerFinder, findsOneWidget);
         serviceLocator.clear();

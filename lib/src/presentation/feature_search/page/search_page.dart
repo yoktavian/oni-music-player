@@ -9,7 +9,13 @@ import 'package:oni_music_player/src/presentation/feature_search/component/searc
 import 'package:oni_music_player/src/presentation/feature_search/component/search_song_playing_controller_widget.dart';
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  static const searchHeaderKey = 'search-bar';
+
+  static const searchResultListKey = 'search-result-list';
+
+  static const searchMusicControllerKey = 'search-music-controller';
+
   final ServiceLocator serviceLocator;
 
   const SearchPage({
@@ -18,36 +24,10 @@ class SearchPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SearchView(
-      repository: serviceLocator.getIt<SearchRepository>(),
-      musicOrganizer: serviceLocator.getIt<OniMusicOrganizer>(),
-    );
-  }
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class SearchView extends StatefulWidget {
-  static const searchHeaderKey = 'search-bar';
-
-  static const searchResultListKey = 'search-result-list';
-
-  static const searchMusicControllerKey = 'search-music-controller';
-
-  final SearchRepository repository;
-
-  final OniMusicOrganizer musicOrganizer;
-
-  const SearchView({
-    Key? key,
-    required this.repository,
-    required this.musicOrganizer,
-  }) : super(key: key);
-
-  @override
-  State<SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<SearchView> {
+class _SearchPageState extends State<SearchPage> {
   late TextEditingController controller;
 
   late OniPresenter presenter;
@@ -57,8 +37,10 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
-    presenter = SearchPresenter(widget.repository);
-    musicOrganizer = widget.musicOrganizer
+    presenter = SearchPresenter(
+      widget.serviceLocator.getIt<SearchRepository>(),
+    );
+    musicOrganizer = widget.serviceLocator.getIt<OniMusicOrganizer>()
       ..listenState(
         (state) {
           presenter.emit(OnMusicPlayerStateChangedEvent(state));
@@ -87,7 +69,7 @@ class _SearchViewState extends State<SearchView> {
               'Hello',
               'Yuda',
               'Find your favorite song by Artist name.',
-              key: const Key(SearchView.searchHeaderKey),
+              key: const Key(SearchPage.searchHeaderKey),
               searchPlaceholder: 'Type the artist name here ...',
               onKeywordChanged: (keyword) {},
               onKeywordSubmitted: (keyword) {
@@ -105,7 +87,7 @@ class _SearchViewState extends State<SearchView> {
                         final state = value as SearchState;
 
                         return ListView.separated(
-                          key: const Key(SearchView.searchResultListKey),
+                          key: const Key(SearchPage.searchResultListKey),
                           itemBuilder: (context, index) {
                             final song = state.songs[index];
                             final playedSongId = state.playedSong?.trackId;
@@ -167,7 +149,7 @@ class _SearchViewState extends State<SearchView> {
                 }
 
                 return SongPlayingControllerWidget(
-                  key: const Key(SearchView.searchMusicControllerKey),
+                  key: const Key(SearchPage.searchMusicControllerKey),
                   songName: songName,
                   artistName: artistName,
                   playingStatusText: playingStatusText,
