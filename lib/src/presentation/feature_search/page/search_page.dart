@@ -11,6 +11,12 @@ import 'package:oni_music_player/src/presentation/feature_search/component/searc
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
 class SearchPage extends StatefulWidget {
+  static const searchHeaderKey = 'search-bar';
+
+  static const searchResultListKey = 'search-result-list';
+
+  static const searchMusicControllerKey = 'search-music-controller';
+
   final SearchRepository repository;
 
   final OniMusicOrganizer musicOrganizer;
@@ -67,6 +73,7 @@ class _SearchPageState extends State<SearchPage> {
               'Hello',
               'Yuda',
               'Find your favorite song by Artist name.',
+              key: const Key(SearchPage.searchHeaderKey),
               searchPlaceholder: 'Type the artist name here ...',
               onKeywordChanged: (keyword) {},
               onKeywordSubmitted: (keyword) {
@@ -84,6 +91,7 @@ class _SearchPageState extends State<SearchPage> {
                         final state = value as SearchState;
 
                         return ListView.separated(
+                          key: const Key(SearchPage.searchResultListKey),
                           itemBuilder: (context, index) {
                             final song = state.songs[index];
                             final playedSongId = state.playedSong?.trackId;
@@ -110,7 +118,7 @@ class _SearchPageState extends State<SearchPage> {
                                 }
                               },
                               playing: selectedSong && musicOrganizer.isPlaying,
-                              key: ObjectKey(song.trackId),
+                              key: Key(song.trackId.toString()),
                             );
                           },
                           separatorBuilder: (context, index) {
@@ -132,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
                 final showControlMenu = isPlaying || isPaused;
 
                 if (!showControlMenu) {
-                  return const SizedBox.shrink();
+                  return const SizedBox.shrink(key: const Key('null'),);
                 }
 
                 final state = value as SearchState;
@@ -145,6 +153,7 @@ class _SearchPageState extends State<SearchPage> {
                 }
 
                 return SongPlayingControllerWidget(
+                  key: const Key(SearchPage.searchMusicControllerKey),
                   songName: songName,
                   artistName: artistName,
                   playingStatusText: playingStatusText,

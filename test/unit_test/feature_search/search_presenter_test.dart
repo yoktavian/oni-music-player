@@ -5,7 +5,7 @@ import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.d
 import 'package:oni_music_player/src/domain/feature_search/entity/song.dart';
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
-import 'fake_data/fake_search_repository.dart';
+import '../../base/fake_data/fake_search_repository.dart';
 
 void main() {
   test(
