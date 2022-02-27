@@ -11,8 +11,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   oni_api:
     path: module/library/oni_api
+  oni_service_locator:
+    path: module/library/oni_service_locator
   audioplayers: ^0.20.1
-
 
 dev_dependencies:
   flutter_test:

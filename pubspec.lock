@@ -170,6 +170,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  oni_service_locator:
+    dependency: "direct main"
+    description:
+      path: "module/library/oni_service_locator"
+      relative: true
+    source: path
+    version: "0.0.1"
   path:
     dependency: transitive
     description:
