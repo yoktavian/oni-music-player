@@ -8,6 +8,7 @@
 - Testing
     - Kind of test
     - Test structure
+- My own library
 - 3rd party library
 - How to run the project
 - Features
@@ -169,6 +170,55 @@ Some rules/tips:
 
 1. Highly recommended to use `When, Given, Then` as the description in the test. That would be great for you and your Test Engineer to read the test easyly.
 2. For widget test, when the screen or component using `Image.network` then you have to wrap the widget with `HttpOverrides.runWithHttpOverrides` then override the `http` with `FakeHttpOverrides`. I already created fake http override in the `fake_data` package so you can use it directly in the test. You have to do this thing because when you pump the screen or component in test environment and your widget contain http request, the http request api would be directly returning 400 so that will cause your test broken. But when you override the http client with `FakeHttpOverrides` that would return 200, and when you have to use `Image.network` in the screen then you will get a fake image so that not cause an exception in your test.
+
+## My own library
+
+On this project i created 2 my own library, the first one is Oni Api and the next one is Oni Service Locator. You can find it on `module/library` package.
+
+1. Oni Api
+
+    Oni api is a network library that created with dio. The reason why i need to wrap dio in my own library is just to make sure when i have to change 3rd pary library with another library then the main project won't be affected because we're still using the same API that is Oni Api. The changes should be affected in the Oni lib only, on the implementation class.
+
+2. Oni Service Locator
+
+    Oni service locator is basically a simple dependency injection that created to make each layer loose coupled. By using dependency injection, if the implementation class of an abstract class has been changed and this class is being used in some screens then when some day the implementation class is changed, so you don't have to replace it one by one in every screen, you just need to replace at one place that is in the dependency injection registrar.
+    
+    How to use it:
+
+    Initialize service locator in `main` before `runApp`. Register all of the dependencies that need to be injected by using `registerFactory`.
+
+    ```dart
+    serviceLocator.registerFactory<AnyAbstractClass>(
+      () => AnyImplementationClass(),
+    );
+    ```
+
+    When you have done to registering all of the dependencies before we can consume it, then we have to use `OniServiceLocatorProvider` as the top of widget to wrap our `App`.
+
+    ```dart
+    runApp(
+      OniServiceLocatorProvider(
+        serviceLocator: serviceLocator,
+        child: YourApp(
+          serviceLocator: serviceLocator,
+        ),
+      ),
+    );
+    ```
+    Because basically `OniServiceLocatorProvider` is an `InheritedWidget` and as you know this is something like a bridge between parent widget and the descendant widget to share the state or data, so please make sure to clear the state which is service locator when it's not being use anymore. How the best practice to do that? you can pass the service locator that has been initialized in `main.dart` then you have to pass it through the `app`. Your `app` must be a statefull widget so that you can override dispose and call `clear`.
+    
+    ```dart
+    @override
+    void dispose() {
+        widget.serviceLocator.clear();
+        super.dispose();
+    }
+    ```
+    Then how to get the object from service locator that we already initialized before?
+    Simply you can get it by using `getIt`.
+    ```dart
+    serviceLocator.getIt<YourAbstractClass>();
+    ```
 
 ## 3rd party library
 
