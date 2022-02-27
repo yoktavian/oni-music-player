@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oni_music_player/src/data/base/organizer/oni_music_organizer_impl.dart';
 import 'package:oni_music_player/src/data/feature_search/repository/search_repository_impl.dart';
 import 'package:oni_music_player/src/domain/base/organizer/oni_music_organizer.dart';
+import 'package:oni_music_player/src/domain/feature_search/repository/search_repository.dart';
 import 'package:oni_music_player/src/presentation/base/presenter/oni_presenter.dart';
 import 'package:oni_music_player/src/presentation/base/style/oni_color_token.dart';
 import 'package:oni_music_player/src/presentation/feature_search/component/search_header_widget.dart';
@@ -10,7 +11,17 @@ import 'package:oni_music_player/src/presentation/feature_search/component/searc
 import 'package:oni_music_player/src/presentation/feature_search/presenter/search_presenter.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  final SearchRepository repository;
+
+  final OniMusicOrganizer musicOrganizer;
+
+  SearchPage({
+    Key? key,
+    SearchRepository? repository,
+    OniMusicOrganizer? musicOrganizer,
+  })  : repository = repository ?? SearchRepositoryImpl(),
+        musicOrganizer = musicOrganizer ?? OniMusicOrganizerImpl(),
+        super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -26,12 +37,13 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    presenter = SearchPresenter(SearchRepositoryImpl());
-    musicOrganizer = OniMusicOrganizerImpl(
-      onStateChanged: (state) {
-        presenter.emit(OnMusicPlayerStateChangedEvent(state));
-      },
-    );
+    presenter = SearchPresenter(widget.repository);
+    musicOrganizer = widget.musicOrganizer
+      ..listenState(
+        (state) {
+          presenter.emit(OnMusicPlayerStateChangedEvent(state));
+        },
+      );
     controller = TextEditingController();
   }
 
