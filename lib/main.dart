@@ -3,11 +3,11 @@ import 'package:oni_music_player/src/presentation/base/router/oni_router.dart';
 import 'package:oni_music_player/src/presentation/feature_search/router/search_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const _OniMusicApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class _OniMusicApp extends StatelessWidget {
+  const _OniMusicApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
