@@ -47,12 +47,14 @@ void main() {
       );
 
       // when
-      await tester.pumpWidget(MaterialApp(
-        home: SearchPage(
-          musicOrganizer: FakeMusicOrganizer(),
-          repository: FakeSearchRepository.success(Result.value(response)),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SearchPage(
+            musicOrganizer: FakeMusicOrganizer(),
+            repository: FakeSearchRepository.success(Result.value(response)),
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       // then
@@ -109,12 +111,14 @@ void main() {
       );
 
       HttpOverrides.runWithHttpOverrides(() async {
-        await tester.pumpWidget(MaterialApp(
-          home: SearchPage(
-            musicOrganizer: FakeMusicOrganizer(),
-            repository: FakeSearchRepository.success(Result.value(response)),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: SearchPage(
+              musicOrganizer: FakeMusicOrganizer(),
+              repository: FakeSearchRepository.success(Result.value(response)),
+            ),
           ),
-        ));
+        );
         await tester.pumpAndSettle();
 
         // when perform search
@@ -204,12 +208,14 @@ void main() {
       );
 
       HttpOverrides.runWithHttpOverrides(() async {
-        await tester.pumpWidget(MaterialApp(
-          home: SearchPage(
-            musicOrganizer: FakeMusicOrganizer(),
-            repository: FakeSearchRepository.success(Result.value(response)),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: SearchPage(
+              musicOrganizer: FakeMusicOrganizer(),
+              repository: FakeSearchRepository.success(Result.value(response)),
+            ),
           ),
-        ));
+        );
         await tester.pumpAndSettle();
 
         // when perform search
@@ -252,7 +258,6 @@ void main() {
           const Key(SearchPage.searchMusicControllerKey),
         );
         expect(musicControllerFinder, findsOneWidget);
-
       }, FakeHttpOverrides());
     },
   );

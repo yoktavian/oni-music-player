@@ -2,12 +2,19 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 
+/// To override http request in test environment.
+/// as you know that our widget contain an image network that using
+/// http request to get image from network, in test environment
+/// it going to be failed because the http API will directly return 400
+/// so that the reason why we have to create this fake http override.
+/// with this fake http override we just returning fake image if any
+/// network image used in the screen.
 class FakeHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context) => FakeHttpClient();
+  HttpClient createHttpClient(SecurityContext? context) => _FakeHttpClient();
 }
 
-class FakeHttpClient implements HttpClient {
+class _FakeHttpClient implements HttpClient {
   @override
   Future<HttpClientRequest> getUrl(Uri? url) {
     return Future.value(_FakeHttpClientRequest());
@@ -31,37 +38,37 @@ class FakeHttpClient implements HttpClient {
   @override
   void addCredentials(
       Uri url, String realm, HttpClientCredentials credentials) {
-    // TODO: implement addCredentials
+    // do nothing.
   }
 
   @override
   void addProxyCredentials(
       String host, int port, String realm, HttpClientCredentials credentials) {
-    // TODO: implement addProxyCredentials
+    // do nothing.
   }
 
   @override
   set authenticate(
       Future<bool> Function(Uri url, String scheme, String realm)? f) {
-    // TODO: implement authenticate
+    // do nothing.
   }
 
   @override
   set authenticateProxy(
       Future<bool> Function(String host, int port, String scheme, String realm)?
-      f) {
-    // TODO: implement authenticateProxy
+          f) {
+    // do nothing.
   }
 
   @override
   set badCertificateCallback(
       bool Function(X509Certificate cert, String host, int port)? callback) {
-    // TODO: implement badCertificateCallback
+    // do nothing.
   }
 
   @override
   void close({bool force = false}) {
-    // TODO: implement close
+    // do nothing.
   }
 
   @override
@@ -78,7 +85,7 @@ class FakeHttpClient implements HttpClient {
 
   @override
   set findProxy(String Function(Uri url)? f) {
-    // TODO: implement findProxy
+    // do nothing.
   }
 
   @override
@@ -176,17 +183,17 @@ class _FakeHttpClientRequest implements HttpClientRequest {
 
   @override
   void abort([Object? exception, StackTrace? stackTrace]) {
-    // TODO: implement abort
+    // do nothing
   }
 
   @override
   void add(List<int> data) {
-    // TODO: implement add
+    // do nothing
   }
 
   @override
   void addError(Object error, [StackTrace? stackTrace]) {
-    // TODO: implement addError
+    // do nothing
   }
 
   @override
@@ -196,15 +203,12 @@ class _FakeHttpClientRequest implements HttpClientRequest {
   }
 
   @override
-  // TODO: implement connectionInfo
   HttpConnectionInfo? get connectionInfo => throw UnimplementedError();
 
   @override
-  // TODO: implement cookies
   List<Cookie> get cookies => throw UnimplementedError();
 
   @override
-  // TODO: implement done
   Future<HttpClientResponse> get done => throw UnimplementedError();
 
   @override
@@ -214,7 +218,6 @@ class _FakeHttpClientRequest implements HttpClientRequest {
   }
 
   @override
-  // TODO: implement method
   String get method => throw UnimplementedError();
 
   @override
@@ -278,37 +281,37 @@ class _FakeHttpHeaders implements HttpHeaders {
 
   @override
   void add(String name, Object value, {bool preserveHeaderCase = false}) {
-    // TODO: implement add
+    // do nothing.
   }
 
   @override
   void clear() {
-    // TODO: implement clear
+    // do nothing.
   }
 
   @override
   void forEach(void Function(String name, List<String> values) action) {
-    // TODO: implement forEach
+    // do nothing.
   }
 
   @override
   void noFolding(String name) {
-    // TODO: implement noFolding
+    // do nothing.
   }
 
   @override
   void remove(String name, Object value) {
-    // TODO: implement remove
+    // do nothing.
   }
 
   @override
   void removeAll(String name) {
-    // TODO: implement removeAll
+    // do nothing.
   }
 
   @override
   void set(String name, Object value, {bool preserveHeaderCase = false}) {
-    // TODO: implement set
+    // do nothing.
   }
 
   @override
@@ -320,20 +323,29 @@ class _FakeHttpHeaders implements HttpHeaders {
 
 class _FakeHttpClientResponse implements HttpClientResponse {
   @override
-  HttpClientResponseCompressionState get compressionState =>
-      HttpClientResponseCompressionState.notCompressed;
+  HttpClientResponseCompressionState get compressionState {
+    return HttpClientResponseCompressionState.notCompressed;
+  }
 
   @override
-  int get contentLength => image.length;
+  int get contentLength => _fakeImage.length;
 
   @override
   int get statusCode => HttpStatus.ok;
 
   @override
-  StreamSubscription<List<int>> listen(void Function(List<int>)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
-    return Stream<List<int>>.fromIterable(<List<int>>[image]).listen(onData,
-        onDone: onDone, onError: onError, cancelOnError: cancelOnError);
+  StreamSubscription<List<int>> listen(
+    void Function(List<int>)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
+    return Stream<List<int>>.fromIterable(<List<int>>[_fakeImage]).listen(
+      onData,
+      onDone: onDone,
+      onError: onError,
+      cancelOnError: cancelOnError,
+    );
   }
 
   @override
@@ -343,9 +355,10 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> asBroadcastStream(
-      {void Function(StreamSubscription<List<int>> subscription)? onListen,
-        void Function(StreamSubscription<List<int>> subscription)? onCancel}) {
+  Stream<List<int>> asBroadcastStream({
+    void Function(StreamSubscription<List<int>> subscription)? onListen,
+    void Function(StreamSubscription<List<int>> subscription)? onCancel,
+  }) {
     // TODO: implement asBroadcastStream
     throw UnimplementedError();
   }
@@ -369,11 +382,9 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  // TODO: implement certificate
   X509Certificate? get certificate => throw UnimplementedError();
 
   @override
-  // TODO: implement connectionInfo
   HttpConnectionInfo? get connectionInfo => throw UnimplementedError();
 
   @override
@@ -383,7 +394,6 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  // TODO: implement cookies
   List<Cookie> get cookies => throw UnimplementedError();
 
   @override
@@ -393,8 +403,9 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> distinct(
-      [bool Function(List<int> previous, List<int> next)? equals]) {
+  Stream<List<int>> distinct([
+    bool Function(List<int> previous, List<int> next)? equals,
+  ]) {
     // TODO: implement distinct
     throw UnimplementedError();
   }
@@ -424,19 +435,22 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  // TODO: implement first
   Future<List<int>> get first => throw UnimplementedError();
 
   @override
-  Future<List<int>> firstWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> firstWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     // TODO: implement firstWhere
     throw UnimplementedError();
   }
 
   @override
   Future<S> fold<S>(
-      S initialValue, S Function(S previous, List<int> element) combine) {
+    S initialValue,
+    S Function(S previous, List<int> element) combine,
+  ) {
     // TODO: implement fold
     throw UnimplementedError();
   }
@@ -448,26 +462,24 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> handleError(Function onError,
-      {bool Function(dynamic)? test}) {
+  Stream<List<int>> handleError(
+    Function onError, {
+    bool Function(dynamic)? test,
+  }) {
     // TODO: implement handleError
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement headers
   HttpHeaders get headers => throw UnimplementedError();
 
   @override
-  // TODO: implement isBroadcast
   bool get isBroadcast => throw UnimplementedError();
 
   @override
-  // TODO: implement isEmpty
   Future<bool> get isEmpty => throw UnimplementedError();
 
   @override
-  // TODO: implement isRedirect
   bool get isRedirect => throw UnimplementedError();
 
   @override
@@ -481,14 +493,15 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   Future<List<int>> get last => throw UnimplementedError();
 
   @override
-  Future<List<int>> lastWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> lastWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     // TODO: implement lastWhere
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement length
   Future<int> get length => throw UnimplementedError();
 
   @override
@@ -498,7 +511,6 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  // TODO: implement persistentConnection
   bool get persistentConnection => throw UnimplementedError();
 
   @override
@@ -508,23 +520,25 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  // TODO: implement reasonPhrase
   String get reasonPhrase => throw UnimplementedError();
 
   @override
-  Future<HttpClientResponse> redirect(
-      [String? method, Uri? url, bool? followLoops]) {
+  Future<HttpClientResponse> redirect([
+    String? method,
+    Uri? url,
+    bool? followLoops,
+  ]) {
     // TODO: implement redirect
     throw UnimplementedError();
   }
 
   @override
-  // TODO: implement redirects
   List<RedirectInfo> get redirects => throw UnimplementedError();
 
   @override
   Future<List<int>> reduce(
-      List<int> Function(List<int> previous, List<int> element) combine) {
+    List<int> Function(List<int> previous, List<int> element) combine,
+  ) {
     // TODO: implement reduce
     throw UnimplementedError();
   }
@@ -534,8 +548,10 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   Future<List<int>> get single => throw UnimplementedError();
 
   @override
-  Future<List<int>> singleWhere(bool Function(List<int> element) test,
-      {List<int> Function()? orElse}) {
+  Future<List<int>> singleWhere(
+    bool Function(List<int> element) test, {
+    List<int> Function()? orElse,
+  }) {
     // TODO: implement singleWhere
     throw UnimplementedError();
   }
@@ -565,8 +581,10 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 
   @override
-  Stream<List<int>> timeout(Duration timeLimit,
-      {void Function(EventSink<List<int>> sink)? onTimeout}) {
+  Stream<List<int>> timeout(
+    Duration timeLimit, {
+    void Function(EventSink<List<int>> sink)? onTimeout,
+  }) {
     // TODO: implement timeout
     throw UnimplementedError();
   }
@@ -596,7 +614,7 @@ class _FakeHttpClientResponse implements HttpClientResponse {
   }
 }
 
-//transparent pixel in png format
-final image = base64Decode(
+// Fake image, just a transparent pixel.
+final _fakeImage = base64Decode(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
 );
